@@ -311,9 +311,15 @@ exec java $JAVA_OPTS -cp "@CLASSPATH@" "$MAINCLASS" "$@"
 """
 
         val relativeJarFile = relativizeFile(baseDirectory, jarFile)
+        val localCpString = cpString.value.split(':').map{ part =>
+          val jar = new File(part)
+          val out = new File("target/staged", jar.getName())
+          IO.copyFile(jar, out)
+          out
+        }.mkString(":")
 
         val script = renderTemplate(template, Map("SCRIPT_ROOT_DETECT" -> scriptRootDetect(baseDirectory, scriptFile, Some(relativeJarFile)),
-            "CLASSPATH" -> cpString.value,
+            "CLASSPATH" -> localCpString,
             "MAIN_CLASS_SETUP" -> mainClassSetup(maybeMainClass)))
         writeScript(scriptFile, script)
         streams.log.info("Wrote start script for jar " + relativeJarFile + " to " + scriptFile + " with mainClass := " + maybeMainClass)

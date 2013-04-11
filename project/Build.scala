@@ -22,8 +22,8 @@ object StartScriptBuild extends Build {
             ScalariformKeys.preferences in Compile := formatPrefs,
             ScalariformKeys.preferences in Test    := formatPrefs) ++
         Seq(sbtPlugin := true,
-            organization := "com.typesafe.sbt",
-            name := "sbt-start-script",
+            organization := "net.superbaloo",
+            name := "sbt-start-script-local",
             scalacOptions := Seq("-unchecked", "-deprecation"),
 
             // to release, bump major/minor/micro as appropriate,
