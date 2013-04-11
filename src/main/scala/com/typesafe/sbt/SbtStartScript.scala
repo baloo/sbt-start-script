@@ -313,9 +313,13 @@ exec java $JAVA_OPTS -cp "@CLASSPATH@" "$MAINCLASS" "$@"
         val relativeJarFile = relativizeFile(baseDirectory, jarFile)
         val localCpString = cpString.value.split(':').map{ part =>
           val jar = new File(part)
-          val out = new File("target/staged", jar.getName())
-          IO.copyFile(jar, out)
-          out
+          if (jar.getName.takeRight(4) == ".jar") {
+            val out = new File("target/staged", jar.getName())
+            IO.copyFile(jar, out)
+            out
+          } else {
+            jar
+          }
         }.mkString(":")
 
         val script = renderTemplate(template, Map("SCRIPT_ROOT_DETECT" -> scriptRootDetect(baseDirectory, scriptFile, Some(relativeJarFile)),
