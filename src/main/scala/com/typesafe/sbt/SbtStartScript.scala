@@ -318,7 +318,7 @@ exec java $JAVA_OPTS -cp "@CLASSPATH@" "$MAINCLASS" "$@"
             IO.copyFile(jar, out)
             out
           } else {
-            jar
+            relativeJarFile
           }
         }.mkString(":")
 
